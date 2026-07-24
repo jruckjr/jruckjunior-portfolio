@@ -1,0 +1,10 @@
+.work-page {
+  padding-block: var(--space-5) var(--space-6);
+}
+
+.work-page-title {
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-bottom: var(--space-5);
+}
