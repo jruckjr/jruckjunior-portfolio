@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import ProjectGrid from '../components/ProjectGrid'
 import ClientTicker from '../components/ClientTicker'
+import IntroTicker from '../components/IntroTicker'
 import { projects } from '../data/projects'
 import './Home.css'
 
@@ -9,8 +10,8 @@ function Home() {
 
   return (
     <>
-      <section className="container home-intro">
-        <p className="home-intro-title">Art Director. Designer. + Motion.</p>
+      <section className="home-intro">
+        <IntroTicker />
       </section>
 
       <section className="home-clients">

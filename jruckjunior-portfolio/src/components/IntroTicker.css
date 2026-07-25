@@ -1,0 +1,112 @@
+.intro-ticker {
+  display: block;
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 4%,
+    black 96%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 4%,
+    black 96%,
+    transparent
+  );
+}
+
+.intro-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: intro-ticker-scroll 52s linear infinite;
+}
+
+.intro-ticker-group {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.intro-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  font-size: clamp(22px, 3vw, 32px);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #EBEDEF;
+  -webkit-text-stroke: 0.5px #000000;
+  padding-right: var(--space-3);
+  transition: color 0.2s ease, -webkit-text-stroke-color 0.2s ease;
+}
+
+.intro-ticker-dot {
+  margin-left: var(--space-3);
+  color: #EBEDEF;
+  -webkit-text-stroke: 0.5px #000000;
+  transition: color 0.2s ease, -webkit-text-stroke-color 0.2s ease;
+}
+
+.intro-ticker:hover .intro-ticker-item,
+.intro-ticker:hover .intro-ticker-dot {
+  color: #000000;
+  -webkit-text-stroke-color: #EBEDEF;
+}
+
+.intro-ticker-item-junior:hover {
+  animation: intro-ticker-junior-blink 0.2s steps(1) infinite,
+    intro-ticker-junior-fonts 1.5s steps(5) infinite;
+}
+
+@keyframes intro-ticker-junior-blink {
+  0%, 49.9% {
+    color: #FD0064;
+  }
+  50%, 100% {
+    color: #000000;
+  }
+}
+
+@keyframes intro-ticker-junior-fonts {
+  0% {
+    font-family: 'Pirata One', var(--font-mono);
+  }
+  20% {
+    font-family: 'UnifrakturMaguntia', var(--font-mono);
+  }
+  40% {
+    font-family: 'UnifrakturCook', var(--font-mono);
+  }
+  60% {
+    font-family: 'MedievalSharp', var(--font-mono);
+  }
+  80% {
+    font-family: 'Metal Mania', var(--font-mono);
+  }
+  100% {
+    font-family: 'Pirata One', var(--font-mono);
+  }
+}
+
+@keyframes intro-ticker-scroll {
+  from {
+    transform: translateX(-50%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-ticker-track {
+    animation: none;
+  }
+}

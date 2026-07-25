@@ -28,10 +28,6 @@
   animation: client-ticker-scroll 32s linear infinite;
 }
 
-.client-ticker:hover .client-ticker-track {
-  animation-play-state: paused;
-}
-
 .client-ticker-group {
   display: flex;
   align-items: center;
