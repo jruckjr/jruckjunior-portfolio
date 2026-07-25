@@ -1,29 +1,44 @@
 import { Link } from 'react-router-dom'
-import ProjectGrid from '../components/ProjectGrid'
 import ClientTicker from '../components/ClientTicker'
 import IntroTicker from '../components/IntroTicker'
 import { projects } from '../data/projects'
 import './Home.css'
 
 function Home() {
-  const featured = projects.slice(0, 4)
-
   return (
     <>
       <section className="home-intro">
         <IntroTicker />
       </section>
 
+      <section className="container home-projects">
+        <div className="home-projects-panel">
+          <table className="home-projects-table">
+            <thead>
+              <tr>
+                <th>Projects</th>
+                <th>Years</th>
+              </tr>
+            </thead>
+            <tbody>
+              {projects.map((project) => (
+                <tr key={project.slug}>
+                  <td>
+                    <Link to={`/work/${project.slug}`}>{project.title}</Link>
+                  </td>
+                  <td>
+                    <Link to={`/work/${project.slug}`}>{project.year}</Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
       <section className="home-clients">
         <p className="container home-clients-title">Brands Worked With:</p>
         <ClientTicker />
-      </section>
-
-      <section className="container home-work">
-        <ProjectGrid projects={featured} />
-        <Link to="/work" className="home-work-link">
-          View all work &rarr;
-        </Link>
       </section>
     </>
   )
