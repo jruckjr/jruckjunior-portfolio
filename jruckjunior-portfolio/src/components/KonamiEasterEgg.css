@@ -1,0 +1,40 @@
+body.konami-active * {
+  animation: konami-blink 0.15s steps(1) infinite, konami-fonts 1.2s steps(5) infinite;
+}
+
+@keyframes konami-blink {
+  0%, 49.9% {
+    color: #FD0064;
+  }
+  50%, 100% {
+    color: #000000;
+  }
+}
+
+@keyframes konami-fonts {
+  0% {
+    font-family: 'Pirata One', var(--font-mono);
+  }
+  20% {
+    font-family: 'UnifrakturMaguntia', var(--font-mono);
+  }
+  40% {
+    font-family: 'UnifrakturCook', var(--font-mono);
+  }
+  60% {
+    font-family: 'MedievalSharp', var(--font-mono);
+  }
+  80% {
+    font-family: 'Metal Mania', var(--font-mono);
+  }
+  100% {
+    font-family: 'Pirata One', var(--font-mono);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.konami-active * {
+    animation: none;
+    color: #FD0064;
+  }
+}

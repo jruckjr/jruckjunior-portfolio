@@ -1,0 +1,32 @@
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+
+  .custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 16px;
+    height: 22px;
+    background: #ffffff;
+    clip-path: polygon(0 0, 100% 42%, 42% 100%);
+    mix-blend-mode: difference;
+    pointer-events: none;
+    z-index: 9999;
+    transition: filter 0.15s ease;
+    will-change: transform;
+  }
+
+  .custom-cursor.is-hovering {
+    mix-blend-mode: normal;
+    filter: drop-shadow(1px 0 0 #000000) drop-shadow(-1px 0 0 #000000)
+      drop-shadow(0 1px 0 #000000) drop-shadow(0 -1px 0 #000000);
+  }
+}
+
+@media not all and (hover: hover) and (pointer: fine) {
+  .custom-cursor {
+    display: none;
+  }
+}
