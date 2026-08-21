@@ -1,0 +1,16 @@
+.checker-stripe {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  height: 28px;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--accent-pink) 0,
+    var(--accent-pink) 28px,
+    var(--bg) 28px,
+    var(--bg) 56px
+  );
+}

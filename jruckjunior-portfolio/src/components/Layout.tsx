@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
-import CustomCursor from './CustomCursor'
 import KonamiEasterEgg from './KonamiEasterEgg'
 import './Layout.css'
 
@@ -33,7 +32,6 @@ function Layout() {
 
   return (
     <div className="site grain-gradient-bg">
-      <CustomCursor />
       <KonamiEasterEgg />
       <a href="#main-content" className="skip-link">
         Skip to content
@@ -78,17 +76,19 @@ function Layout() {
 
       <footer className="site-footer">
         <div className="container site-footer-inner">
-          <a href="mailto:jruckjr@gmail.com">jruckjr@gmail.com</a>
-          <a
-            href="https://www.linkedin.com/in/james-ruckdeschell-jr-57040150"
-            target="_blank"
-            rel="noreferrer"
-          >
-            LinkedIn
-          </a>
-          <span className="site-footer-copyright">
-            &copy; {new Date().getFullYear()} Junior Ruckdeschell
-          </span>
+          <div className="site-footer-location">
+            <p>Located in Seattle.</p>
+            <a href="mailto:jruckjr@gmail.com">jruckjr@gmail.com</a>
+          </div>
+          <div className="site-footer-social">
+            <a
+              href="https://www.linkedin.com/in/james-ruckdeschell-jr-57040150"
+              target="_blank"
+              rel="noreferrer"
+            >
+              LinkedIn
+            </a>
+          </div>
         </div>
       </footer>
     </div>
