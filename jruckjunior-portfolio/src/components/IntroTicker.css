@@ -26,7 +26,7 @@
 .intro-ticker-track {
   display: flex;
   width: max-content;
-  animation: intro-ticker-scroll 52s linear infinite;
+  animation: intro-ticker-scroll 78s linear infinite;
 }
 
 .intro-ticker-group {

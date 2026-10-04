@@ -1,0 +1,97 @@
+/* Tall track the stage stays pinned inside; its extra height is the scroll
+   distance the shrink / float / grow sequence plays out over. */
+.showreel-scroll {
+  position: relative;
+  height: 500vh;
+  margin-top: var(--space-6);
+}
+
+.showreel-scroll-stage {
+  /* Placeholders stay out of a centre column this wide so the reel shows through. */
+  --clear: 500px;
+  --gutter: calc((100% - var(--clear)) / 2);
+  --gutter-left-start: 0%;
+  --gutter-right-start: calc(50% + var(--clear) / 2);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.showreel-scroll-reel {
+  position: absolute;
+  inset: 0;
+  background: #0f0f0f;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  transform-origin: center;
+  will-change: transform;
+}
+
+.showreel-scroll-play {
+  font-size: 28px;
+}
+
+.showreel-scroll-caption {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.showreel-scroll-placeholder {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #d9d9d9;
+  color: #6b6b6b;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  visibility: hidden;
+  will-change: transform;
+}
+
+/* Too narrow for a 500px clear column plus usable gutters: use the full width. */
+@media (max-width: 900px) {
+  .showreel-scroll-stage {
+    --clear: 0px;
+  }
+}
+
+/* No pinning or motion: the reel sits at full size and the placeholders
+   become a plain grid underneath it. */
+@media (prefers-reduced-motion: reduce) {
+  .showreel-scroll {
+    height: auto;
+  }
+
+  .showreel-scroll-stage {
+    position: static;
+    height: auto;
+    overflow: visible;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-3);
+    padding-inline: var(--space-4);
+  }
+
+  .showreel-scroll-reel {
+    position: relative;
+    grid-column: 1 / -1;
+    margin-inline: calc(var(--space-4) * -1);
+    aspect-ratio: 16 / 9;
+  }
+
+  .showreel-scroll-placeholder {
+    position: static;
+    visibility: visible;
+    width: auto !important;
+  }
+}

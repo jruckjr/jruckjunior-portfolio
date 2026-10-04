@@ -38,6 +38,22 @@
   box-sizing: border-box;
 }
 
+/* Invert toggle: flip the whole page, then flip photos, video, the showreel
+   section and the checker stripe back so they keep their real colors. Client
+   logos stay flipped to read on the dark page. */
+html,
+.showreel-scroll-stage,
+.checker-stripe {
+  transition: filter 0.3s ease;
+}
+
+html.inverted,
+html.inverted :is(.showreel-scroll-stage, .checker-stripe),
+html.inverted
+  :is(img, video):not(.client-ticker-item img, .showreel-scroll-stage *) {
+  filter: invert(1);
+}
+
 body {
   margin: 0;
 }

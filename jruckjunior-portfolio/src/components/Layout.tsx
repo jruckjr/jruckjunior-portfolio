@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
+import InvertToggle from './InvertToggle'
 import KonamiEasterEgg from './KonamiEasterEgg'
 import './Layout.css'
 
@@ -41,6 +42,7 @@ function Layout() {
           <NavLink to="/" className="logo" end>
             Junior.
           </NavLink>
+          <InvertToggle />
           <button
             ref={menuButtonRef}
             type="button"

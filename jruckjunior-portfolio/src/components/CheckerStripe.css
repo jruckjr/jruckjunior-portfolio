@@ -5,12 +5,27 @@
   right: 50%;
   margin-left: -50vw;
   margin-right: -50vw;
-  height: 28px;
-  background-image: repeating-linear-gradient(
-    to right,
-    var(--accent-pink) 0,
-    var(--accent-pink) 28px,
-    var(--bg) 28px,
-    var(--bg) 56px
+  /* 3 rows of 28px squares in a checkerboard */
+  height: 84px;
+  background-image: conic-gradient(
+    transparent 0 25%,
+    var(--accent-pink) 0 50%,
+    transparent 0 75%,
+    var(--accent-pink) 0
   );
+  background-size: 56px 56px;
+  /* Shifting by one 56px tile loops seamlessly. */
+  animation: checker-stripe-tick 3s linear infinite;
+}
+
+@keyframes checker-stripe-tick {
+  to {
+    background-position-x: -56px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .checker-stripe {
+    animation: none;
+  }
 }

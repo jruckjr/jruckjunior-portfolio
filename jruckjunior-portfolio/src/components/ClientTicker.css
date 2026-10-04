@@ -25,7 +25,7 @@
 .client-ticker-track {
   display: flex;
   width: max-content;
-  animation: client-ticker-scroll 32s linear infinite;
+  animation: client-ticker-scroll 48s linear infinite;
 }
 
 .client-ticker-group {
@@ -38,13 +38,13 @@
 .client-ticker-item {
   display: flex;
   align-items: center;
-  height: 32px;
+  height: 46px;
 }
 
 .client-ticker-item img {
   height: 100%;
   width: auto;
-  max-width: 96px;
+  max-width: 138px;
   object-fit: contain;
   filter: grayscale(1);
   opacity: 0.6;

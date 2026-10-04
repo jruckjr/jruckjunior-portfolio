@@ -3,17 +3,18 @@
 }
 
 .home-hero-wordmark {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(64px, 14vw, 180px);
+  font-family: 'Unbounded', var(--font-display);
+  font-weight: 900;
+  font-size: clamp(51.2px, 11.2vw, 144px);
   line-height: 0.9;
+  letter-spacing: -0.055em;
   margin: 0;
 }
 
 .home-hero-subhead {
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(22px, 4vw, 44px);
+  font-family: 'Unbounded', var(--font-display);
+  font-weight: 900;
+  font-size: clamp(17.6px, 3.2vw, 35.2px);
   margin-top: var(--space-3);
 }
 
@@ -58,45 +59,10 @@
   color: var(--text-muted);
 }
 
-.home-brands-box {
-  flex: 1;
-  max-width: 320px;
-  height: 36px;
-  border: 1px solid var(--border);
-  border-radius: 2px;
-}
-
 .home-clients {
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   padding-block: var(--space-4);
-}
-
-.home-showreel {
-  padding-block: var(--space-6);
-}
-
-.home-showreel-media {
-  aspect-ratio: 16 / 9;
-  width: 100%;
-  background: #0f0f0f;
-  color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-2);
-}
-
-.home-showreel-play {
-  font-size: 28px;
-}
-
-.home-showreel-caption {
-  font-size: 13px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.8);
 }
 
 .home-about-list {

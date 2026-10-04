@@ -1,14 +1,19 @@
 import ClientTicker from '../components/ClientTicker'
 import IntroTicker from '../components/IntroTicker'
 import CheckerStripe from '../components/CheckerStripe'
+import MeltText from '../components/MeltText'
+import ShowreelScroll from '../components/ShowreelScroll'
 import './Home.css'
 
 function Home() {
   return (
     <>
       <section className="container home-hero">
-        <h1 className="home-hero-wordmark">JUNIOR.</h1>
-        <p className="home-hero-subhead">Art Director. Designer. [+Motion]</p>
+        <MeltText as="h1" className="home-hero-wordmark" text="JUNIOR." />
+        <MeltText
+          className="home-hero-subhead"
+          text="Art Director. Designer. [+Motion]"
+        />
       </section>
 
       <section className="home-intro">
@@ -17,21 +22,13 @@ function Home() {
 
       <section className="container home-brands-intro">
         <p className="home-brands-label">Brands I&rsquo;ve worked with:</p>
-        <div className="home-brands-box" aria-hidden="true" />
       </section>
 
       <section className="home-clients">
         <ClientTicker />
       </section>
 
-      <section className="container home-showreel">
-        <div className="home-showreel-media">
-          <span className="home-showreel-play" aria-hidden="true">
-            &#9654;
-          </span>
-          <span className="home-showreel-caption">Showreel</span>
-        </div>
-      </section>
+      <ShowreelScroll />
 
       <CheckerStripe />
 
