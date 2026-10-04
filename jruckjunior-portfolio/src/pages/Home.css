@@ -18,8 +18,17 @@
   margin-top: var(--space-3);
 }
 
+/* Fills the first screen so the showreel always starts below the fold; the
+   leftover height becomes space between the intro ticker and the brands. */
+.home-above-fold {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - var(--nav-height));
+}
+
 .home-intro {
   padding-block: var(--space-5);
+  margin-bottom: var(--space-6);
 }
 
 .home-intro-title {
@@ -47,6 +56,7 @@
 }
 
 .home-brands-intro {
+  margin-top: auto;
   display: flex;
   align-items: center;
   justify-content: space-between;

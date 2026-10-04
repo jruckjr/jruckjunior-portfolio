@@ -8,25 +8,27 @@ import './Home.css'
 function Home() {
   return (
     <>
-      <section className="container home-hero">
-        <MeltText as="h1" className="home-hero-wordmark" text="JUNIOR." />
-        <MeltText
-          className="home-hero-subhead"
-          text="Art Director. Designer. [+Motion]"
-        />
-      </section>
+      <div className="home-above-fold">
+        <section className="container home-hero">
+          <MeltText as="h1" className="home-hero-wordmark" text="JUNIOR." />
+          <MeltText
+            className="home-hero-subhead"
+            text="Art Director. Designer. [+Motion]"
+          />
+        </section>
 
-      <section className="home-intro">
-        <IntroTicker />
-      </section>
+        <section className="home-intro">
+          <IntroTicker />
+        </section>
 
-      <section className="container home-brands-intro">
-        <p className="home-brands-label">Brands I&rsquo;ve worked with:</p>
-      </section>
+        <section className="container home-brands-intro">
+          <p className="home-brands-label">Brands I&rsquo;ve worked with:</p>
+        </section>
 
-      <section className="home-clients">
-        <ClientTicker />
-      </section>
+        <section className="home-clients">
+          <ClientTicker />
+        </section>
+      </div>
 
       <ShowreelScroll />
 
