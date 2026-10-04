@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { NavLink, Outlet, useLocation } from 'react-router-dom'
 import InvertToggle from './InvertToggle'
 import KonamiEasterEgg from './KonamiEasterEgg'
+import ProjectStrip from './ProjectStrip'
 import './Layout.css'
 
 const MAGNET_PULL = 0.3
@@ -11,6 +12,8 @@ function Layout() {
   const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
   const menuButtonRef = useRef<HTMLButtonElement>(null)
+  // The project strip only shows on the work index and project pages.
+  const onWorkPage = /^\/work(\/|$)/.test(location.pathname)
 
   useEffect(() => {
     setMenuOpen(false)
@@ -71,6 +74,7 @@ function Layout() {
           </nav>
         </div>
       </header>
+      {onWorkPage && <ProjectStrip />}
 
       <main id="main-content" key={location.pathname} className="page-transition">
         <Outlet />

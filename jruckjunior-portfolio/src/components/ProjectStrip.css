@@ -1,0 +1,67 @@
+/* Pinned right under the sticky header, with the same frosted backing. */
+.project-strip {
+  position: sticky;
+  top: var(--nav-height);
+  z-index: 9;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+}
+
+.project-strip-list {
+  /* Positioned so link offsets (used to centre the current one) are measured from here. */
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  row-gap: var(--space-1);
+  margin-block: 0;
+  padding-block: var(--space-3);
+  list-style: none;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* A dot between projects (40% larger than the text), not after the last one. */
+.project-strip-list li:not(:last-child)::after {
+  content: '·';
+  margin-inline: var(--space-2);
+  font-size: 1.4em;
+  line-height: 1;
+  color: var(--text-muted);
+}
+
+.project-strip-list a {
+  color: var(--text-muted);
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.project-strip-list a:hover,
+.project-strip-list a.active {
+  color: var(--text);
+}
+
+.project-strip-list a.active {
+  font-weight: 700;
+}
+
+/* Phones and small tablets: wrapped, the pinned strip would cover too much of
+   the screen, so it becomes one line to swipe through. */
+@media (max-width: 900px) {
+  .project-strip-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .project-strip-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .project-strip-list li {
+    flex-shrink: 0;
+  }
+}

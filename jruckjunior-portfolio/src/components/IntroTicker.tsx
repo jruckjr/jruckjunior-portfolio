@@ -1,6 +1,6 @@
 import './IntroTicker.css'
 
-const INTRO_WORDS = ['"Junior."', 'Art Director.', 'Designer.', '+Motion']
+const INTRO_WORDS = ['Art Director.', 'Designer.', '+Motion']
 
 function IntroTickerGroup() {
   return (
@@ -8,7 +8,7 @@ function IntroTickerGroup() {
       {Array.from({ length: 6 }).map((_, repeatIndex) =>
         INTRO_WORDS.map((word, wordIndex) => (
           <span
-            className={`intro-ticker-item${word === '"Junior."' ? ' intro-ticker-item-junior' : ''}`}
+            className="intro-ticker-item"
             key={`${repeatIndex}-${wordIndex}`}
           >
             {word}

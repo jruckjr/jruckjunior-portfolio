@@ -190,10 +190,11 @@
 }
 
 .case-study-heading {
-  font-family: 'Unbounded', var(--font-display);
-  font-weight: 900;
+  /* Courier Prime, the site's typewriter face (loaded in 400 and 700). */
+  font-family: var(--font-mono);
+  font-weight: 700;
   font-size: clamp(28px, 3.6vw, 48px);
-  line-height: 1;
+  line-height: 1.1;
   text-transform: uppercase;
   margin: 0 0 var(--space-4);
 }
