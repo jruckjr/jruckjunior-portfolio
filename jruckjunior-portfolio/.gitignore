@@ -22,3 +22,14 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Photos and videos stay on this computer only; GitHub gets the code.
+# (The site's media lives in src/assets and WORK ASSETS.)
+*.mp4
+*.mov
+*.webm
+*.gif
+*.webp
+*.jpg
+*.jpeg
+*.png
