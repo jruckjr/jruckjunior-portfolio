@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import reelVideo from '../../WORK ASSETS/Homepage/jruckjunior_2025_v2_reel.mp4'
 import './ShowreelScroll.css'
 
 // Scroll timeline across the pinned section (0 = pinned, 1 = released):
@@ -32,7 +33,44 @@ const easeInOut = (t: number) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 
 function ShowreelScroll() {
   const sectionRef = useRef<HTMLElement>(null)
   const reelRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
   const placeholderRefs = useRef<(HTMLDivElement | null)[]>([])
+  const [soundOn, setSoundOn] = useState(false)
+
+  function toggleSound() {
+    const video = videoRef.current
+    if (!video) return
+    // React only applies `muted` on mount, so flip it on the element directly.
+    video.muted = soundOn
+    setSoundOn(!soundOn)
+  }
+
+  // Muted autoplay starts the reel once it scrolls into view and pauses it
+  // when it leaves, so it isn't decoding off screen.
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    // Reduced motion: no autoplay, let the viewer start it themselves.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      video.controls = true
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Fast scrolls can batch several changes; the last one is current.
+        if (entries[entries.length - 1].isIntersecting) {
+          // play() rejects if the browser blocks autoplay; the poster frame stays up.
+          video.play().catch(() => {})
+        } else {
+          video.pause()
+        }
+      },
+      { threshold: 0.25 },
+    )
+    observer.observe(video)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     const section = sectionRef.current
@@ -83,10 +121,28 @@ function ShowreelScroll() {
     <section ref={sectionRef} className="showreel-scroll">
       <div className="showreel-scroll-stage">
         <div ref={reelRef} className="showreel-scroll-reel">
-          <span className="showreel-scroll-play" aria-hidden="true">
-            &#9654;
-          </span>
-          <span className="showreel-scroll-caption">Showreel</span>
+          <video
+            ref={videoRef}
+            className="showreel-scroll-video"
+            src={reelVideo}
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            aria-label="Showreel"
+          />
+          <button
+            type="button"
+            role="switch"
+            aria-checked={soundOn}
+            className="showreel-scroll-sound"
+            onClick={toggleSound}
+          >
+            sound
+            <span className="showreel-scroll-sound-track" aria-hidden="true">
+              <span className="showreel-scroll-sound-knob" />
+            </span>
+          </button>
         </div>
 
         {PLACEHOLDERS.map((placeholder, i) => (

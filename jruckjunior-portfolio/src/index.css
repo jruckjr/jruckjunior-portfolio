@@ -50,9 +50,12 @@ html,
 html.inverted,
 html.inverted :is(.showreel-scroll-stage, .checker-stripe),
 html.inverted
-  :is(img, video):not(.client-ticker-item img, .showreel-scroll-stage *) {
+  :is(img, video):not(.client-ticker-item img, .showreel-scroll-stage *, dialog *) {
   filter: invert(1);
 }
+
+/* Modal dialogs render in the browser's top layer, outside the page filter,
+   so their media needs no flip back (it's excluded above). */
 
 body {
   margin: 0;
