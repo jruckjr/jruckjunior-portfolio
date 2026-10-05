@@ -23,12 +23,17 @@
   line-height: 1.6;
 }
 
-/* A dot between projects (40% larger than the text), not after the last one. */
+/* A dot between projects (1.68× the text: 40% larger, then 20% more), not
+   after the last one. */
 .project-strip-list li:not(:last-child)::after {
   content: '·';
   margin-inline: var(--space-2);
-  font-size: 1.4em;
-  line-height: 1;
+  font-size: 1.68em;
+  /* Big glyphs ride high and stretch the line: keep them out of the line
+     height and drop them to the middle of the lowercase text. */
+  line-height: 0;
+  position: relative;
+  top: 0.14em;
   color: var(--text-muted);
 }
 
@@ -38,13 +43,14 @@
   transition: color 0.15s ease;
 }
 
-.project-strip-list a:hover,
 .project-strip-list a.active {
   color: var(--text);
+  font-weight: 700;
 }
 
-.project-strip-list a.active {
-  font-weight: 700;
+/* Hover in the homepage accent pink (after .active so it wins there too). */
+.project-strip-list a:hover {
+  color: var(--accent-pink);
 }
 
 /* Phones and small tablets: wrapped, the pinned strip would cover too much of

@@ -38,13 +38,13 @@
 .client-ticker-item {
   display: flex;
   align-items: center;
-  height: 46px;
+  height: 55.2px;
 }
 
 .client-ticker-item img {
   height: 100%;
   width: auto;
-  max-width: 138px;
+  max-width: 165.6px;
   object-fit: contain;
   filter: grayscale(1);
   opacity: 0.6;
