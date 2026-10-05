@@ -1,0 +1,59 @@
+.project-ticker {
+  --row-gap: var(--space-2);
+  position: relative;
+  /* Height comes from the layout (it stretches to fill); this is the floor.
+     The width is set because the moving track is out of flow; it fits the
+     longest title at 14px. */
+  min-height: 200px;
+  width: 360px;
+  max-width: 100%;
+  overflow: hidden;
+  text-align: right;
+  /* Names fade in at the bottom edge and out at the top. */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 22%, black 78%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, black 22%, black 78%, transparent);
+}
+
+/* Taken out of flow so the stacked copies don't stretch the box. */
+.project-ticker-track {
+  position: absolute;
+  inset: 0 0 auto;
+  animation: project-ticker-up 26s linear infinite;
+}
+
+.project-ticker-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--row-gap);
+  margin: 0;
+  /* Trailing gap so the second copy starts one row-gap after the first ends,
+     making the -50% loop point seamless. */
+  padding: 0 0 var(--row-gap);
+  list-style: none;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--text-muted);
+}
+
+@keyframes project-ticker-up {
+  /* Up by one copy of the four: one full pass through the list per cycle. */
+  to {
+    transform: translateY(-25%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-ticker {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .project-ticker-track {
+    position: static;
+    animation: none;
+  }
+
+  .project-ticker-list[aria-hidden='true'] {
+    display: none;
+  }
+}

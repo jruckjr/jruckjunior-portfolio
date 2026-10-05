@@ -3,7 +3,8 @@ import './MeltText.css'
 
 // A patch of smooth noise follows the cursor and is fed into an SVG
 // displacement filter, so the glyph shapes themselves bend and drip instead
-// of whole letters moving. The patch radius scales with the font size.
+// of whole letters moving. The patch radius scales with the font size
+// (overridable per use, e.g. a bigger patch for small text).
 const RADIUS_EM = 1.2
 // fractalNoise channels mostly stay within ±0.3 of neutral, so this turns
 // `strength` into roughly the largest pixel shift you'll see.
@@ -14,6 +15,11 @@ const WOBBLE_SPEED = 0.0012
 const BASE_FREQUENCY = { x: 0.018, y: 0.006 }
 // Blur applied inside the melt patch, as a fraction of the font size.
 const BLUR_EM = 0.03
+// Film grain laid over the melted (blurred) area: peak opacity, speck size
+// (noise frequency) and how many frames each grain pattern holds before reseeding.
+const GRAIN_OPACITY = 0.9
+const GRAIN_FREQUENCY = 0.85
+const GRAIN_HOLD_FRAMES = 3
 
 // Soft white disc (opaque centre, transparent edge) used to confine the noise.
 function createMask(size: number) {
@@ -31,19 +37,31 @@ function createMask(size: number) {
 }
 
 type MeltTextProps = {
-  as?: 'h1' | 'p'
-  text: string
+  as?: 'h1' | 'p' | 'div'
+  // Text to melt, or any content passed as children (e.g. a list).
+  text?: string
+  children?: React.ReactNode
+  radiusEm?: number
   className?: string
   strength?: number
 }
 
-function MeltText({ as: Tag = 'p', text, className, strength = 40 }: MeltTextProps) {
+function MeltText({
+  as: Tag = 'p',
+  text,
+  children,
+  className,
+  strength = 40,
+  radiusEm = RADIUS_EM,
+}: MeltTextProps) {
   const filterId = `melt-${useId().replace(/[^a-zA-Z0-9_-]/g, '')}`
   const textRef = useRef<HTMLElement>(null)
   const turbulenceRef = useRef<SVGFETurbulenceElement>(null)
   const maskRef = useRef<SVGFEImageElement>(null)
   const displacementRef = useRef<SVGFEDisplacementMapElement>(null)
   const blurRef = useRef<SVGFEGaussianBlurElement>(null)
+  const grainNoiseRef = useRef<SVGFETurbulenceElement>(null)
+  const grainAlphaRef = useRef<SVGFEFuncAElement>(null)
 
   useEffect(() => {
     const el = textRef.current
@@ -51,7 +69,9 @@ function MeltText({ as: Tag = 'p', text, className, strength = 40 }: MeltTextPro
     const mask = maskRef.current
     const displacement = displacementRef.current
     const blur = blurRef.current
-    if (!el || !turbulence || !mask || !displacement || !blur) return
+    const grainNoise = grainNoiseRef.current
+    const grainAlpha = grainAlphaRef.current
+    if (!el || !turbulence || !mask || !displacement || !blur || !grainNoise || !grainAlpha) return
 
     const canMelt = window.matchMedia(
       '(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)',
@@ -66,10 +86,11 @@ function MeltText({ as: Tag = 'p', text, className, strength = 40 }: MeltTextPro
     let y = 0
     let intensity = 0
     let frame = 0
+    let grainFrame = 0
 
     function measure() {
       const fontSize = parseFloat(getComputedStyle(el!).fontSize)
-      radius = fontSize * RADIUS_EM
+      radius = fontSize * radiusEm
       maxBlur = fontSize * BLUR_EM
       const size = Math.round(radius * 2)
       mask!.setAttribute('width', String(size))
@@ -93,6 +114,11 @@ function MeltText({ as: Tag = 'p', text, className, strength = 40 }: MeltTextPro
       mask!.setAttribute('y', String(y - radius))
       displacement!.setAttribute('scale', String(maxScale * intensity))
       blur!.setAttribute('stdDeviation', String(maxBlur * intensity))
+      grainAlpha!.setAttribute('slope', String(GRAIN_OPACITY * intensity))
+      // A fresh grain pattern every few frames reads as flickering film grain.
+      if (++grainFrame % GRAIN_HOLD_FRAMES === 0) {
+        grainNoise!.setAttribute('seed', String(grainFrame))
+      }
 
       if (!target && intensity < 0.005) {
         // Fully settled: drop the filter so the text renders normally.
@@ -132,15 +158,15 @@ function MeltText({ as: Tag = 'p', text, className, strength = 40 }: MeltTextPro
       el.removeEventListener('pointerleave', handleLeave)
       el.style.filter = ''
     }
-  }, [filterId, strength])
+  }, [filterId, strength, radiusEm])
 
   return (
     <>
       <Tag
-        ref={textRef as React.Ref<HTMLHeadingElement & HTMLParagraphElement>}
+        ref={textRef as React.Ref<HTMLHeadingElement & HTMLParagraphElement & HTMLDivElement>}
         className={className}
       >
-        {text}
+        {children ?? text}
       </Tag>
       <svg className="melt-text-defs" aria-hidden="true" focusable="false">
         <filter
@@ -186,7 +212,49 @@ function MeltText({ as: Tag = 'p', text, className, strength = 40 }: MeltTextPro
           <feGaussianBlur ref={blurRef} in="melted" stdDeviation={0} result="meltedBlur" />
           <feComposite in="meltedBlur" in2="mask" operator="in" result="blurInside" />
           <feComposite in="melted" in2="mask" operator="out" result="sharpOutside" />
-          <feComposite in="blurInside" in2="sharpOutside" operator="arithmetic" k2={1} k3={1} />
+          <feComposite
+            in="blurInside"
+            in2="sharpOutside"
+            operator="arithmetic"
+            k2={1}
+            k3={1}
+            result="meltedText"
+          />
+          {/* Grain over the melt: light specks where the noise peaks, dark specks
+              where it dips (those show on the pale blur halo), kept to the
+              blurred glyphs inside the patch and faded in with the melt. */}
+          <feTurbulence
+            ref={grainNoiseRef}
+            type="fractalNoise"
+            baseFrequency={GRAIN_FREQUENCY}
+            numOctaves={2}
+            seed={1}
+            result="grainNoise"
+          />
+          <feColorMatrix
+            in="grainNoise"
+            type="matrix"
+            values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  3 0 0 0 -1.5"
+            result="lightSpecks"
+          />
+          <feColorMatrix
+            in="grainNoise"
+            type="matrix"
+            values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -3 0 0 0 1.4"
+            result="darkSpecks"
+          />
+          <feMerge result="grain">
+            <feMergeNode in="lightSpecks" />
+            <feMergeNode in="darkSpecks" />
+          </feMerge>
+          <feComposite in="grain" in2="blurInside" operator="in" result="grainOnMelt" />
+          <feComponentTransfer in="grainOnMelt" result="fadedGrain">
+            <feFuncA ref={grainAlphaRef} type="linear" slope={0} />
+          </feComponentTransfer>
+          <feMerge>
+            <feMergeNode in="meltedText" />
+            <feMergeNode in="fadedGrain" />
+          </feMerge>
         </filter>
       </svg>
     </>

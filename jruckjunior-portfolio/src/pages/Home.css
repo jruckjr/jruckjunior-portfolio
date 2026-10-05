@@ -1,5 +1,30 @@
+/* Titles on the left, the scrolling project list on the right. The hero takes
+   all the leftover height above the brands, so the list runs down to them. */
 .home-hero {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: var(--space-5);
   padding-block: var(--space-6) var(--space-3);
+}
+
+.home-hero-titles {
+  align-self: flex-start;
+}
+
+/* Grain: the letters are filled with the ink colour plus a tiling speckle
+   texture (light flecks where the noise peaks), clipped to the glyphs. */
+.home-hero-wordmark,
+.home-hero-subhead {
+  --title-ink: #1e2124;
+  color: transparent;
+  background-color: var(--title-ink);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 3 0 0 0 -1.5'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 .home-hero-wordmark {
@@ -24,35 +49,6 @@
   display: flex;
   flex-direction: column;
   min-height: calc(100svh - var(--nav-height));
-}
-
-.home-intro {
-  padding-block: var(--space-5);
-  margin-bottom: var(--space-6);
-}
-
-.home-intro-title {
-  margin: 0;
-  opacity: 0;
-  animation: home-intro-fade-in 1.8s ease forwards;
-}
-
-@keyframes home-intro-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-intro-title {
-    opacity: 1;
-    animation: none;
-  }
 }
 
 .home-brands-intro {

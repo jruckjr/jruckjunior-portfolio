@@ -1,7 +1,7 @@
 import ClientTicker from '../components/ClientTicker'
-import IntroTicker from '../components/IntroTicker'
 import CheckerStripe from '../components/CheckerStripe'
 import MeltText from '../components/MeltText'
+import ProjectTicker from '../components/ProjectTicker'
 import ShowreelScroll from '../components/ShowreelScroll'
 import './Home.css'
 
@@ -10,15 +10,14 @@ function Home() {
     <>
       <div className="home-above-fold">
         <section className="container home-hero">
-          <MeltText as="h1" className="home-hero-wordmark" text="JUNIOR." />
-          <MeltText
-            className="home-hero-subhead"
-            text="Art Director. Designer. [+Motion]"
-          />
-        </section>
-
-        <section className="home-intro">
-          <IntroTicker />
+          <div className="home-hero-titles">
+            <MeltText as="h1" className="home-hero-wordmark" text="JUNIOR." />
+            <MeltText
+              className="home-hero-subhead"
+              text="Art Director. Designer. [+Motion]"
+            />
+          </div>
+          <ProjectTicker />
         </section>
 
         <section className="container home-brands-intro">
