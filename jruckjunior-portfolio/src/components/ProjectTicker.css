@@ -35,6 +35,40 @@
   color: var(--text-muted);
 }
 
+.project-ticker-list li {
+  /* Keeps the row its full height while a name is deleted to nothing. */
+  min-height: 1.4em;
+}
+
+/* While a cursor retypes a name, the real text is hidden from sight (not from
+   screen readers) and the typed copy shows instead. */
+.project-ticker-list li.is-typing .project-ticker-title {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* A solid block cursor, one character wide and the full text height. */
+.project-ticker-caret {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.15em;
+  /* Negative block margins keep the tall block from growing the line. */
+  margin: -0.2em 0 -0.2em 1px;
+  vertical-align: -0.2em;
+  background: currentColor;
+  animation: project-ticker-blink 0.9s steps(1) infinite;
+}
+
+@keyframes project-ticker-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
 @keyframes project-ticker-up {
   /* Up by one copy of the four: one full pass through the list per cycle. */
   to {
@@ -54,6 +88,14 @@
   }
 
   .project-ticker-list[aria-hidden='true'] {
+    display: none;
+  }
+}
+
+/* Desktop only: hidden on phones (portrait and landscape). While hidden it
+   has no size, so the typewriter finds nothing to pick and stays idle. */
+@media (max-width: 768px) {
+  .project-ticker {
     display: none;
   }
 }

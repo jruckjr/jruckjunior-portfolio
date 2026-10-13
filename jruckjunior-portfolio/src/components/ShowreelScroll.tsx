@@ -8,7 +8,12 @@ const SHRINK_END = 0.12
 const FLOAT_START = 0.14
 const FLOAT_END = 0.86
 const GROW_START = 0.88
-const MIN_SCALE = 0.8
+const MIN_SCALE = 0.65
+// Corner radius (on screen, in px) once the reel has fully shrunk.
+const SHRUNK_RADIUS = 20
+// Peak rotation (degrees) mid-shrink.
+const TILT_Y = 16
+const TILT_Z = 4
 // Share of the float window each placeholder spends crossing the screen.
 const FLOAT_DURATION = 0.3
 
@@ -89,7 +94,14 @@ function ShowreelScroll() {
       const shrink = easeInOut(clamp01(progress / SHRINK_END))
       const grow = easeInOut(clamp01((progress - GROW_START) / (1 - GROW_START)))
       const scale = 1 - (1 - MIN_SCALE) * (shrink - grow)
-      reel!.style.transform = `scale(${scale})`
+      // Tilt peaks midway through the shrink (and the grow) and settles back
+      // to flat, so the reel twists slightly as it scrolls into place.
+      const tilt = Math.sin(shrink * Math.PI) - Math.sin(grow * Math.PI)
+      reel!.style.transform =
+        `perspective(1500px) rotateY(${tilt * TILT_Y}deg) rotateZ(${tilt * TILT_Z}deg) scale(${scale})`
+      // Square at full size, rounding in as it shrinks; divided by scale so the
+      // on-screen radius lands on SHRUNK_RADIUS rather than being scaled down.
+      reel!.style.borderRadius = `${(SHRUNK_RADIUS * (shrink - grow)) / scale}px`
 
       const stagger = (FLOAT_END - FLOAT_START - FLOAT_DURATION) / (PLACEHOLDERS.length - 1)
       placeholderRefs.current.forEach((el, i) => {
