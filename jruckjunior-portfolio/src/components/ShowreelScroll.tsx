@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import reelVideo from '../../WORK ASSETS/Homepage/jruckjunior_2025_v2_reel.mp4'
+import trackTilt from './trackTilt'
 import './ShowreelScroll.css'
 
 // Scroll timeline across the pinned section (0 = pinned, 1 = released):
@@ -14,8 +15,14 @@ const SHRUNK_RADIUS = 20
 // Peak rotation (degrees) mid-shrink.
 const TILT_Y = 16
 const TILT_Z = 4
+// Drop shadow once fully shrunk (larger and darker than the work cards').
+const SHADOW_Y = 19.6
+const SHADOW_BLUR = 44.8
+const SHADOW_ALPHA = 0.42
 // Share of the float window each placeholder spends crossing the screen.
 const FLOAT_DURATION = 0.3
+// Share of each placeholder's crossing spent fading in (and again fading out).
+const FLOAT_FADE = 0.2
 
 // Hand-placed so the nine don't stack. Each sits in the left or right gutter
 // beside the clear centre column (see ShowreelScroll.css); offset and width are
@@ -102,15 +109,20 @@ function ShowreelScroll() {
       // Square at full size, rounding in as it shrinks; divided by scale so the
       // on-screen radius lands on SHRUNK_RADIUS rather than being scaled down.
       reel!.style.borderRadius = `${(SHRUNK_RADIUS * (shrink - grow)) / scale}px`
+      // Soft drop shadow, fading in as it shrinks.
+      const lift = shrink - grow
+      reel!.style.boxShadow = `0 ${(SHADOW_Y * lift) / scale}px ${(SHADOW_BLUR * lift) / scale}px rgba(0, 0, 0, ${SHADOW_ALPHA * lift})`
 
       const stagger = (FLOAT_END - FLOAT_START - FLOAT_DURATION) / (PLACEHOLDERS.length - 1)
       placeholderRefs.current.forEach((el, i) => {
         if (!el) return
         const start = FLOAT_START + i * stagger
         const t = clamp01((progress - start) / FLOAT_DURATION)
-        // From just below the screen to just above it.
-        const y = viewport - t * (viewport + el.offsetHeight)
+        // From just below the screen to just above it: slow at either end,
+        // fastest mid-screen, fading in on the way in and out on the way out.
+        const y = viewport - easeInOut(t) * (viewport + el.offsetHeight)
         el.style.transform = `translate3d(0, ${y}px, 0)`
+        el.style.opacity = String(Math.min(1, t / FLOAT_FADE, (1 - t) / FLOAT_FADE))
         el.style.visibility = t > 0 && t < 1 ? 'visible' : 'hidden'
       })
     }
@@ -170,8 +182,12 @@ function ShowreelScroll() {
               aspectRatio: placeholder.ratio,
             }}
             aria-hidden="true"
+            onPointerEnter={trackTilt}
+            onPointerMove={trackTilt}
           >
-            {String(i + 1).padStart(2, '0')}
+            <div className="showreel-scroll-placeholder-card">
+              {String(i + 1).padStart(2, '0')}
+            </div>
           </div>
         ))}
       </div>

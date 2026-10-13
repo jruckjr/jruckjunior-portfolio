@@ -4,16 +4,37 @@
   gap: var(--space-6) var(--space-4);
 }
 
+/* The list item stays put and owns the hover, so the card shrinking out from
+   under the cursor doesn't flicker the hover off at its edges. */
+.project-card {
+  perspective: 1500px;
+}
+
 .project-card a {
   display: block;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Shrinks to 80% and tips back into the page like the homepage reel, with
+   the corner nearest the cursor pressed furthest back (--tilt-x / --tilt-y
+   are set from the pointer in ProjectGrid.tsx). */
+.project-card:hover a {
+  transform: rotateX(calc(var(--tilt-y, 0) * -12deg)) rotateY(calc(var(--tilt-x, 0) * 12deg))
+    scale(0.8);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.14);
 }
 
 .project-card-media {
   aspect-ratio: 4 / 3;
   background: #f2f2f2;
-  border: 1px solid var(--border);
   overflow: hidden;
-  transition: opacity 0.15s ease;
 }
 
 .project-card-media img {
@@ -22,12 +43,9 @@
   object-fit: cover;
 }
 
-.project-card a:hover .project-card-media {
-  opacity: 0.85;
-}
-
 .project-card-meta {
-  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4) var(--space-4);
+  background: #ffffff;
 }
 
 .project-card-meta h2 {
@@ -39,6 +57,16 @@
   margin-top: var(--space-1);
   font-size: 14px;
   color: var(--text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-card a {
+    transition: box-shadow 0.2s ease;
+  }
+
+  .project-card:hover a {
+    transform: none;
+  }
 }
 
 @media (max-width: 720px) {

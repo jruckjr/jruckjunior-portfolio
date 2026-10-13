@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import type { Project } from '../data/projects'
+import trackTilt from './trackTilt'
 import './ProjectGrid.css'
 
 interface ProjectGridProps {
@@ -10,7 +11,12 @@ function ProjectGrid({ projects }: ProjectGridProps) {
   return (
     <ul className="project-grid">
       {projects.map((project) => (
-        <li key={project.slug} className="project-card">
+        <li
+          key={project.slug}
+          className="project-card"
+          onPointerEnter={trackTilt}
+          onPointerMove={trackTilt}
+        >
           <Link to={`/work/${project.slug}`}>
             <div className="project-card-media">
               <img src={project.image} alt="" loading="lazy" />
